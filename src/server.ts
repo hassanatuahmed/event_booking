@@ -20,27 +20,37 @@ export const startServer = async () => {
   );
   app.use(koaBodyParser({ jsonLimit }));
   app.use((ctx, next) => {
-    console.log("context", ctx);
+    console.log("context>>>", ctx);
     next();
   });
 
-
   const router = new Router();
+
   router.get("/", (ctx, next) => {
     ctx.body = {
       hello: "World!!!",
     };
+
     next();
   });
-  router.get("/name", (ctx, next) => {
+  router.get("/user", (ctx, next) => {
     ctx.body = {
       name: "Hassana Ahmed",
+      age: 30,
+      height: 50,
+      color: "blue",
+    };
+    next();
+  });
+
+  router.get("/test", (ctx, next) => {
+    ctx.body = {
+      has: "Bala Bala",
     };
     next();
   });
   app.use(router.routes());
 
-  
   const server = app.listen(serverPort);
   server.timeout = requestTimeoutMs;
 
