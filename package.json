@@ -5,7 +5,7 @@
   "repository": "https://github.com/hassanatuahmed/event_booking.git",
   "author": "Saeed <saeedissah@gmail.com>",
   "scripts": {
-    "run": ""
+    "start": "nodemon src/app.ts"
   },
   "license": "MIT",
   "dependencies": {
