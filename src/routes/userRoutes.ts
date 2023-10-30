@@ -76,6 +76,76 @@ userRoutes.get("/", (ctx, next) => {
   next();
 });
 
+userRoutes.get("/get-date", (ctx, next) => {
+  ctx.body = {
+    date: new Date(),
+  };
+  next();
+});
+
+userRoutes.patch("/:id", (ctx, next) => {
+  const id = ctx.params.id;
+  if (isNaN(Number(id))) {
+    ctx.status = 400;
+    ctx.body = { error: "Id should be a number" };
+  } else {
+    const user = users.find((myUser) => {
+      return myUser.id == Number(id);
+    });
+    const payload = ctx.request.body as {
+      firstName: string;
+      lastName: string;
+    };
+
+    if (user) {
+      if (payload.firstName) {
+        user.firstName = payload.firstName;
+        ctx.body = { message: `${user.firstName} was successfully updated` };
+      }
+      if (payload.lastName) {
+        user.firstName = payload.firstName;
+        ctx.body = { message: "field updated" };
+      }
+    } else {
+      ctx.body = { error: "User not found" };
+    }
+    next();
+  }
+});
+
+userRoutes.put("/:id", (ctx, next) => {
+  const id = ctx.params.id;
+  if (isNaN(Number(id))) {
+    ctx.status = 400;
+    ctx.body = { error: "Id should be a number" };
+  } else {
+    const user = users.find((myUser) => {
+      return myUser.id == Number(id);
+    });
+
+    const payload = ctx.request.body as {
+      firstName: string;
+      lastName: string;
+    };
+
+    if (!payload.firstName || !payload.lastName) {
+      ctx.body = { message: "both first name and last name is required" };
+    } else {
+      if (!user) {
+        ctx.body = { message: "User Not Found" };
+      } else {
+        user.firstName = payload.firstName;
+        user.lastName = payload.lastName;
+        ctx.body = {
+          message: "User updated",
+        };
+      }
+    }
+
+    next();
+  }
+});
+
 // http://localhost:9090/users
 // http://localhost:9090/users/name?
 // http://localhost:9090/users/:location/name
